@@ -2,8 +2,8 @@
 
 const bignum = require('bignum');
 
-const POW2_32 = bignum.pow(2, 32);
-const POW2_64 = bignum.pow(2, 64);
+const POW2_32 = bignum.pow(2, 32).toString();
+const POW2_64 = bignum.pow(2, 64).toString();
 
 /**
  * Reverse hash {a: '1'} to {1: 'a'}
