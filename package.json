@@ -1,0 +1,13 @@
+{
+  "name": "steam-id",
+  "version": "1.0.0",
+  "description": "Allows to manipulate with various SteamID formats",
+  "main": "index.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bignum": "^0.12.5"
+  }
+}
