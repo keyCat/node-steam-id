@@ -216,6 +216,10 @@ class SteamID {
         return `[${SteamID.TYPE_CHAR_R[this.type]}:${this.universe}:${this.steam32}]`;
     }
 
+    toString() {
+        return this.toSteam64();
+    }
+
     /**
      * Tests if string formatted as Steam2
      *
