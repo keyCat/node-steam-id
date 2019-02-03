@@ -174,14 +174,32 @@ class SteamID {
     }
 
     /**
+     * Returns 32-bit string representation
+     *
+     * @returns {String} 123456789
+     * */
+    toSteam32() {
+        if (!this.steam32) { return ''; }
+        return this.steam32.toString();
+    }
+
+    /**
+     * Returns 64-bit string representation
+     *
+     * returns {String} 76561198123456789
+     * */
+    toSteam64() {
+        if (!this.steam64) { return ''; }
+        return this.steam64.toString();
+    }
+
+    /**
      * Returns Steam2 string
      *
      * @returns {String} STEAM_0:1:12345678, null if SteamID is invalid
      * */
     toSteam2() {
-        if (!this.steam32) {
-            return null;
-        }
+        if (!this.steam32) { return ''; }
         return `STEAM_${this.universe}:${this.steam32 % 2}:${Long.fromString(this.steam32).shiftRight(1).toString()}`;
     }
 
@@ -191,9 +209,7 @@ class SteamID {
      * @returns {String} [U:1:123456789] or [U:1:123456789:0], null if SteamID is invalid
      * */
     toSteam3() {
-        if (!this.steam32) {
-            return null;
-        }
+        if (!this.steam32) { return ''; }
         if (this.type === SteamID.TYPE.AnonGameServer) {
             return `[${SteamID.TYPE_CHAR_R[this.type]}:${this.universe}:${this.steam32}:${this.instance}]`;
         }
