@@ -8,6 +8,6 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "bignum": "^0.12.5"
+    "long": "^4.0.0"
   }
 }

@@ -1,9 +1,8 @@
 'use strict';
 
-const bignum = require('bignum');
+const Long = require('long');
 
-const POW2_32 = bignum.pow(2, 32).toString();
-const POW2_64 = bignum.pow(2, 64).toString();
+const POW2_32 = Long.fromString('4294967296');
 
 /**
  * Reverse hash {a: '1'} to {1: 'a'}
@@ -110,7 +109,7 @@ class SteamID {
             if (universe === '0') {
                 universe = 1;
             }
-            steam32 = bignum(match[3])
+            steam32 = Long.fromString(match[3])
                 .shiftLeft(1)
                 .or(reminder)
                 .toString();
@@ -134,14 +133,14 @@ class SteamID {
         }
         else {
             // assuming 32 or 64 bit numeric value
-            if (Number(base) < 1) {
+            if (parseInt(base) < 1) {
                 return null;
             }
             if (!/^\d+$/.test(String(base))) {
                 // contains letters
                 return null;
             }
-            const num = bignum(base);
+            const num = Long.fromString(base);
             // 32-bit account id
             if (SteamID.is32(base)) {
                 type = SteamID.TYPE.Individual;
@@ -157,17 +156,17 @@ class SteamID {
             }
         }
 
-        universe = Number(universe);
-        type = Number(type);
-        instance = Number(instance);
+        universe = parseInt(universe);
+        type = parseInt(type);
+        instance = parseInt(instance);
         if (!instance) {
             instance = (type === SteamID.TYPE.Individual || type === SteamID.TYPE.GameServer) ? 1 : 0;
         }
         if (!steam64) {
-            steam64 = bignum(bignum(universe).shiftLeft(56).toString())
-                .or(bignum(type).shiftLeft(52).toString())
-                .or(bignum(instance).shiftLeft(32).toString())
-                .or(steam32)
+            steam64 = Long.fromString(Long.fromInt(universe).shiftLeft(56).toString())
+                .or(Long.fromInt(type).shiftLeft(52).toString())
+                .or(Long.fromInt(instance).shiftLeft(32).toString())
+                .or(Long.fromString(steam32))
                 .toString();
         }
 
@@ -183,7 +182,7 @@ class SteamID {
         if (!this.steam32) {
             return null;
         }
-        return `STEAM_${this.universe}:${this.steam32 % 2}:${bignum(this.steam32).shiftRight(1).toString()}`;
+        return `STEAM_${this.universe}:${this.steam32 % 2}:${Long.fromString(this.steam32).shiftRight(1).toString()}`;
     }
 
     /**
@@ -228,7 +227,7 @@ class SteamID {
      * @returns {Boolean}
      * */
     static is32(str = '') {
-        const num = bignum(str);
+        const num = Long.fromString(str);
         return num.gt(0) && num.lt(POW2_32);
     }
 
@@ -239,8 +238,8 @@ class SteamID {
      * @returns {Boolean}
      * */
     static is64(str = '') {
-        const num = bignum(str);
-        return num.gt(0) && num.gt(POW2_32) && num.lt(POW2_64);
+        const num = Long.fromString(str);
+        return num.gt(0) && num.gt(POW2_32);
     }
 }
 
