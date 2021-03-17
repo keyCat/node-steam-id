@@ -1,9 +1,9 @@
 import {SteamIDParts, SteamIDInput, SteamIDUniverse} from '../types';
 import {INSTANCE, STEAM2_REGEXP, TYPE, UNIVERSE} from '../const';
-import isValidAccoundIDInput from './isValidAccoundIDInput';
-import isValidSteamIDParts from './isValidSteamIDParts';
+import {isValidAccoundIDInput} from './isValidAccoundIDInput';
+import {isValidSteamIDParts} from './isValidSteamIDParts';
 
-export default function parseSteam2(value: SteamIDInput = ''): SteamIDParts | null {
+export function parseSteam2(value: SteamIDInput = ''): SteamIDParts | null {
     let match: RegExpMatchArray | null;
 
     if (match = STEAM2_REGEXP.exec(value.toString())) {

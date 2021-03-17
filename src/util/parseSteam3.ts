@@ -1,9 +1,9 @@
 import {SteamIDParts, SteamIDAccount, SteamIDInput, SteamIDInstance, SteamIDTypeChar, SteamIDUniverse} from '../types';
 import {INSTANCE, STEAM3_REGEXP, TYPE, TYPE_CHAR} from '../const';
-import isValidAccoundIDInput from './isValidAccoundIDInput';
-import isValidSteamIDParts from './isValidSteamIDParts';
+import {isValidAccoundIDInput} from './isValidAccoundIDInput';
+import {isValidSteamIDParts} from './isValidSteamIDParts';
 
-export default function parseSteam3(input: SteamIDInput = ''): SteamIDParts | null {
+export function parseSteam3(input: SteamIDInput = ''): SteamIDParts | null {
     let match: RegExpMatchArray | null;
 
     if (match = STEAM3_REGEXP.exec(input.toString())) {
@@ -15,7 +15,7 @@ export default function parseSteam3(input: SteamIDInput = ''): SteamIDParts | nu
 
         if (typeCh === 'T' || typeCh === 'g') {
             instance = INSTANCE.ALL;
-        }  else if (parseInt(match[4])) {
+        }  else if (match[4]) {
             instance = parseInt(match[4]) as SteamIDInstance;
         } else if (type === TYPE.Individual) {
             instance = INSTANCE.DESKTOP;

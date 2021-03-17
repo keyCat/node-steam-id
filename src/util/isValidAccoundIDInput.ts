@@ -5,7 +5,7 @@ function isValidIntString(value: string): boolean {
     return /^\d+$/.test(String(value));
 }
 
-export default function isValidAccoundIDInput(value: SteamIDInput = ''): boolean {
+export function isValidAccoundIDInput(value: SteamIDInput = ''): boolean {
     if (typeof value === 'number') {
         return value >= 0 && value < POW2_32;
     } else {

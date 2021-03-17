@@ -1,172 +1,204 @@
-import {SteamID2, SteamID3, SteamID64, SteamIDAccount, SteamIDInput, SteamIDInstance, SteamIDType, SteamIDTypeChar, SteamIDUniverse} from './types';
-import bigInt, {BigInteger} from 'big-integer';
-import isValidSteam64Input from './util/isValidSteam64Input';
-import isValidSteam3Input from './util/isValidSteam3Input';
-import isValidSteam2Input from './util/isValidSteam2Input';
+import {
+    SteamCommunityUrl,
+    SteamID2,
+    SteamID3,
+    SteamID64,
+    SteamIDAccount,
+    SteamIDInput,
+    SteamIDInstance,
+    SteamIDParts,
+    SteamIDType,
+    SteamIDUniverse,
+} from './types';
+import {Steam64} from './Steam64';
+import {parseSteamUrl} from './util/parseSteamUrl';
+import {isValidSteam64Input} from './util/isValidSteam64Input';
+import {isValidSteam3Input} from './util/isValidSteam3Input';
+import {partsToSteam2} from './util/partsToSteam2';
+import {parseSteam64} from './util/parseSteam64';
+import {partsToSteam3} from './util/partsToSteam3';
+import {isValidSteamIDParts} from './util/isValidSteamIDParts';
+import {parseSteam2} from './util/parseSteam2';
+import {isValidSteam2Input} from './util/isValidSteam2Input';
+import {parseSteam3} from './util/parseSteam3';
 import {parseSteamID} from './util/parseSteamID';
-import isValidSteamIDParts from './util/isValidSteamIDParts';
-import getBinaryPart from './util/getBinaryPart';
-import {setBinaryPart} from './util/setBinaryPart';
-import parseSteam2 from './util/parseSteam2';
-import parseSteam3 from './util/parseSteam3';
-import parseSteam64 from './util/parseSteam64';
-import {INSTANCE, TYPE, TYPE_CHAR} from './const';
+import {parseSteamUrlSync} from './util/parseSteamUrlSync';
+import {partsToSteamUrl} from './util/partsToSteamUrl';
 
 export class SteamID {
-    private steam64: BigInteger = bigInt(0);
+    private steam64: Steam64 = new Steam64();
 
-    static isSteam2Input(input: SteamID2 = ''): boolean {
+    public static isSteam2Input(input: SteamID2 = ''): boolean {
         return isValidSteam2Input(input);
     }
 
-    static isSteam3Input(input: SteamID3 = ''): boolean {
+    public isSteam3Input(input: SteamID3 = ''): boolean {
         return isValidSteam3Input(input);
     }
 
-    static isSteam64Input(input: SteamID64 = ''): boolean {
+    public static isSteam64Input(input: SteamID64 = ''): boolean {
         return isValidSteam64Input(input);
     }
 
-    static fromValue(input: SteamIDInput = ''): SteamID {
+    public static fromValue(input: SteamIDInput = ''): SteamID {
         return new SteamID(input);
     }
 
-    static fromSteam2(input: SteamIDInput = ''): SteamID {
-        const steamId = new SteamID();
-        const parsed = parseSteam2(input);
-        if (parsed) {
-            steamId.setAccountID(parsed.accountId);
-            steamId.setInstance(parsed.instance);
-            steamId.setType(parsed.type);
-            steamId.setUniverse(parsed.universe);
-        }
-        return steamId;
+    public static fromSteam2(input: SteamID2 = ''): SteamID {
+        return new SteamID().setFromSteam2(input);
     }
 
-    static fromSteam3(input: SteamIDInput = ''): SteamID {
-        const steamId = new SteamID();
-        const parsed = parseSteam3(input);
-        if (parsed) {
-            steamId.setAccountID(parsed.accountId);
-            steamId.setInstance(parsed.instance);
-            steamId.setType(parsed.type);
-            steamId.setUniverse(parsed.universe);
-        }
-        return steamId;
+    public static fromSteam3(input: SteamID3 = ''): SteamID {
+        return new SteamID().setFromSteam3(input);
     }
 
-    static fromSteam64(input: SteamIDInput = ''): SteamID {
-        const steamId = new SteamID();
-        const parsed = parseSteam64(input);
-        if (parsed) {
-            steamId.setAccountID(parsed.accountId);
-            steamId.setInstance(parsed.instance);
-            steamId.setType(parsed.type);
-            steamId.setUniverse(parsed.universe);
-        }
-        return steamId;
+    public static fromSteam64(input: SteamID64 = ''): SteamID {
+        return new SteamID().setFromSteam64(input);
+    }
+
+    public static fromUrlSync(url: SteamCommunityUrl = ''): SteamID {
+        return new SteamID().setFromUrlSync(url);
     }
 
     public constructor(input?: SteamIDInput) {
-        if (input) this.parse(input);
+        if (input) {
+            this.parse(input);
+        }
     }
 
     public reset(): void {
-        this.steam64 = bigInt(0);
+        this.steam64 = new Steam64();
     }
 
     public parse(input: SteamIDInput = ''): void {
-        const parsed = parseSteamID(input);
-        if (!parsed) return this.reset();
+        const parts = parseSteamID(input);
+        if (!parts) {
+            return this.reset();
+        }
 
-        this.setAccountID(parsed.accountId);
-        this.setInstance(parsed.instance);
-        this.setType(parsed.type);
-        this.setUniverse(parsed.universe);
+        this.setFromParts(parts);
     }
 
     public isValid(): boolean {
         return isValidSteamIDParts(this.getAccountID(), this.getInstance(), this.getType(), this.getUniverse());
     }
 
-    private get(offset: number, mask: number): BigInteger {
-        return getBinaryPart(this.steam64, offset, mask);
-    }
-
     public getAccountID(): SteamIDAccount {
-        return this.get(0, 0xFFFFFFFF).valueOf();
+        return this.steam64.getAccountID();
     }
 
     public getInstance(): SteamIDInstance {
-        return this.get(32, 0xFFFFF).valueOf() as SteamIDInstance;
+        return this.steam64.getInstance();
     }
 
     public getType(): SteamIDType {
-        return this.get(52, 0xF).valueOf() as SteamIDType;
+        return this.steam64.getType();
     }
 
     public getUniverse(): SteamIDUniverse {
-        return this.get(56, 0xFF).valueOf() as SteamIDUniverse;
+        return this.steam64.getUniverse();
     }
 
-    private set(offset: number, mask: number, value: number): void {
-        this.steam64 = setBinaryPart(this.steam64, offset, mask, value);
+    public getParts(): SteamIDParts {
+        return {
+            accountId: this.getAccountID(),
+            instance: this.getInstance(),
+            type: this.getType(),
+            universe: this.getUniverse(),
+        };
     }
 
-    public setAccountID(accountId: SteamIDAccount): void {
-        this.set(0, 0xFFFFFFFF, accountId);
+    public setAccountID(accountId: SteamIDAccount): this {
+        this.steam64.setAccountID(accountId);
+        return this;
     }
 
-    public setInstance(instance: SteamIDInstance): void {
-        this.set(32, 0xFFFFF, instance);
+    public setInstance(instance: SteamIDInstance): this {
+        this.steam64.setInstance(instance);
+        return this;
     }
 
-    public setType(type: SteamIDType): void {
-        this.set(52, 0xF, type);
+    public setType(type: SteamIDType): this {
+        this.steam64.setType(type);
+        return this;
     }
 
-    public setUniverse(universe: SteamIDUniverse): void {
-        this.set(56, 0xFF, universe);
+    public setUniverse(universe: SteamIDUniverse): this {
+        this.steam64.setUniverse(universe);
+        return this;
+    }
+
+    public setFromParts({accountId, instance, type, universe}: SteamIDParts): this {
+        return this
+            .setAccountID(accountId)
+            .setInstance(instance)
+            .setType(type)
+            .setUniverse(universe);
+    }
+
+    public setFromValue(input: SteamIDInput = ''): this {
+        const parts = parseSteamID(input);
+        parts ? this.setFromParts(parts) : this.reset();
+
+        return this;
+    }
+
+    public setFromSteam2(input: SteamID2 = ''): this {
+        const parts = parseSteam2(input);
+        parts ? this.setFromParts(parts) : this.reset();
+
+        return this;
+    }
+
+    public setFromSteam3(input: SteamID3 = ''): this {
+        const parts = parseSteam3(input);
+        parts ? this.setFromParts(parts) : this.reset();
+
+        return this;
+    }
+
+    public setFromSteam64(input: SteamID64 = ''): this {
+        const parts = parseSteam64(input);
+        parts ? this.setFromParts(parts) : this.reset();
+
+        return this;
+    }
+
+    public async setFromUrl(url: SteamCommunityUrl = ''): Promise<this> {
+        const parts = await parseSteamUrl(url);
+        parts ? this.setFromParts(parts) : this.reset();
+        return this;
+    }
+
+    public setFromUrlSync(url: SteamCommunityUrl = ''): this {
+        const parts = parseSteamUrlSync(url);
+        if (parts) {
+            this.setFromParts(parts);
+        } else {
+            this.reset();
+        }
+        return this;
     }
 
     public toSteam2(): string {
-        const accountId = this.getAccountID();
-        return `STEAM_${this.getUniverse()}:${accountId & 1}:${accountId >> 1}`;
+        return partsToSteam2(this.getAccountID(), this.getUniverse());
     }
 
     public toSteam3(): string {
-        const type = this.getType();
-        let typeCh: keyof typeof TYPE_CHAR = 'i';
-        let hasInstance = false;
-        let instance = this.getInstance();
-
-        Object.keys(TYPE_CHAR).forEach((key) => {
-            if (type === TYPE_CHAR[<SteamIDTypeChar>key]) {
-                typeCh = <SteamIDTypeChar>key;
-            }
-        });
-
-        switch (type) {
-            case TYPE.Chat:
-                if (instance & INSTANCE.FLAG_CLAN) {
-                    typeCh = 'c';
-                } else if (instance & INSTANCE.FLAG_LOBBY) {
-                    typeCh = 'L';
-                }
-                break;
-            case TYPE.AnonGameServer:
-            case TYPE.Multiseat:
-                hasInstance = true;
-                break;
-            case TYPE.Individual:
-                hasInstance = instance !== INSTANCE.DESKTOP;
-                break;
-        }
-        return `[${typeCh}:${this.getUniverse()}:${this.getAccountID()}${hasInstance ? `:${instance}` : ''}]`;
+        return partsToSteam3(this.getAccountID(), this.getInstance(), this.getType(), this.getUniverse());
     }
 
     public toSteam64(): string {
         return this.toString();
+    }
+
+    public toSteamUrl(): string {
+        return partsToSteamUrl({
+            accountId: this.getAccountID(),
+            instance: this.getInstance(),
+            type: this.getType(),
+            universe: this.getUniverse(),
+        });
     }
 
     public toString(): string {

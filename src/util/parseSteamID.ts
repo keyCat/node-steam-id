@@ -1,9 +1,9 @@
-import {SteamIDParts, SteamIDInput} from '../types';
-import isValidSteam3Input from './isValidSteam3Input';
-import parseSteam3 from './parseSteam3';
-import parseSteam64 from './parseSteam64';
-import isValidSteam2Input from './isValidSteam2Input';
-import parseSteam2 from './parseSteam2';
+import {SteamIDInput, SteamIDParts} from '../types';
+import {isValidSteam3Input} from './isValidSteam3Input';
+import {parseSteam64} from './parseSteam64';
+import {parseSteam2} from './parseSteam2';
+import {isValidSteam2Input} from './isValidSteam2Input';
+import {parseSteam3} from './parseSteam3';
 
 export function parseSteamID(input: SteamIDInput = ''): SteamIDParts | null {
     if (isValidSteam2Input(input)) {

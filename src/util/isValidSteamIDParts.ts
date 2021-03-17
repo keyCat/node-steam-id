@@ -1,7 +1,7 @@
 import {SteamIDAccount, SteamIDInstance, SteamIDType, SteamIDUniverse} from '../types';
 import {INSTANCE, TYPE, UNIVERSE} from '../const';
 
-export default function isValidSteamIDParts(accountId: SteamIDAccount, instance: SteamIDInstance, type: SteamIDType, universe: SteamIDUniverse): boolean {
+export function isValidSteamIDParts(accountId: SteamIDAccount, instance: SteamIDInstance, type: SteamIDType, universe: SteamIDUniverse): boolean {
     if (type <= TYPE.Invalid || type > TYPE.AnonUser) {
         return false;
     }

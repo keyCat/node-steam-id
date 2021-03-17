@@ -1,7 +1,5 @@
-import bigInt from 'big-integer';
-
 export const POW2_32 = 2 ** 32;
-export const FIRST_STEAM64 = bigInt('76561197960265729');
+export const FIRST_STEAM64 = BigInt('76561197960265729');
 
 /**
  * Steam account types.
@@ -63,4 +61,6 @@ export const INSTANCE = {
 
 export const STEAM2_REGEXP = /^STEAM_([0-4]):([0-1]):([\d]{1,10})$/;
 export const STEAM2_STABLE_REGEXP = /^([0-1]):([\d]{1,10})$/;
-export const STEAM3_REGEXP = /^\[([AGMPCgcLTIUai]):([0-4]):([\d]{1,10})(:\d+)?\]$/;
+export const STEAM3_REGEXP = /^\[([AGMPCgcLTIUai]):([0-4]):([\d]{1,10})(?::(\d+))?\]$/;
+export const COMMUNITY_URL_SIMPLE_REGEXP = /^https?:\/\/(?:my\.steamchina|steamcommunity)\.com\/(?:profiles|gid)\/(.+?)(?:\/|$)/;
+export const COMMUNITY_URL_VANITY_REGEXP = /^https?:\/\/(?:my\.steamchina|steamcommunity)\.com\/(id|groups|games)\/([\w-]+)(?:\/|$)/;

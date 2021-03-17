@@ -5,15 +5,15 @@
   "main": "dist/index.js",
   "scripts": {
     "prepublish": "npm run build",
-    "build": "rimraf dist/ && tsc"
+    "build": "rimraf dist/ && tsc",
+    "watch": "tsc --watch"
   },
   "keywords": [],
   "author": "",
   "license": "MIT",
-  "dependencies": {
-    "big-integer": "^1.6.48"
-  },
+  "dependencies": {},
   "devDependencies": {
+    "@types/node": "^14.14.31",
     "rimraf": "^3.0.2",
     "typescript": "^4.1.5"
   }
