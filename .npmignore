@@ -1,0 +1,26 @@
+# source
+lib
+sample
+test
+e2e
+.idea
+
+jest.config.json
+jest.config.ts
+index.ts
+plugin.ts
+package-lock.json
+.eslintignore
+.eslintrc.js
+tsconfig.json
+.prettierrc
+.circleci
+.github
+
+# misc
+renovate.json
+npm-debug.log
+.DS_Store
+.commitlintrc.json
+.release-it.json
+CONTRIBUTING.md
