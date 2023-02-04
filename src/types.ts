@@ -14,7 +14,7 @@ export type SteamIDInput =
   | SteamID3
   | SteamIDAccount
   | SteamID64
-  | BigInteger;
+  | bigint;
 export type SteamIDUniverse = (typeof ACCOUNT_UNIVERSE)[keyof typeof ACCOUNT_UNIVERSE];
 export type SteamIDType = (typeof ACCOUNT_TYPE)[keyof typeof ACCOUNT_TYPE];
 export type SteamIDTypeChar = keyof typeof ACCOUNT_TYPE_CHAR;
