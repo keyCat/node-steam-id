@@ -1,6 +1,6 @@
 {
   "name": "@0x0c/steam-id",
-  "version": "2.0.0-rc.2",
+  "version": "2.0.0",
   "description": "Class and utils to read, create and transform SteamIDs",
   "main": "dist/index.js",
   "repository": "https://github.com/keyCat/node-steam-id",
@@ -10,8 +10,15 @@
     "watch": "tsc --watch",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "steam",
+    "steamid",
+    "steam-id",
+    "steamcommunity",
+    "steam-community",
+    "steamcommunityid"
+  ],
+  "author": "IIya Gorbachevsky",
   "license": "MIT",
   "devDependencies": {
     "@types/jest": "^29.4.0",
