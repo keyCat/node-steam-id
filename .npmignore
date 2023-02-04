@@ -1,0 +1,34 @@
+# source
+src
+test
+e2e
+.idea
+node_modules
+
+jest.config.json
+jest.config.ts
+index.ts
+plugin.ts
+package-lock.json
+.eslintignore
+.eslintrc.js
+tsconfig.json
+.prettierrc
+.circleci
+.github
+
+# test
+coverage
+test.js
+test.js.map
+test.d.ts
+test.d.ts.map
+
+# misc
+renovate.json
+npm-debug.log
+.DS_Store
+.commitlintrc.json
+.release-it.json
+CONTRIBUTING.md
+run.js
