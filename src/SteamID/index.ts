@@ -11,7 +11,6 @@ import {
   SteamIDUniverse,
 } from '../types';
 import Steam64 from '../Steam64';
-import parseSteamUrl from '../parseSteamUrl';
 import isValidSteam64Input from '../isValidSteam64Input';
 import isValidSteam3Input from '../isValidSteam3Input';
 import partsToSteam2 from '../partsToSteam2';
@@ -22,8 +21,9 @@ import parseSteam2 from '../parseSteam2';
 import isValidSteam2Input from '../isValidSteam2Input';
 import parseSteam3 from '../parseSteam3';
 import parseSteamID from '../parseSteamID';
-import parseSteamUrlSync from '../parseSteamUrlSync';
+import parseSteamUrl from '../parseSteamUrl';
 import partsToSteamUrl from '../partsToSteamUrl';
+import isValidSteamCommunityUrl from '../isValidSteamCommunityUrl';
 
 export default class SteamID {
   private steam64: Steam64 = new Steam64();
@@ -38,6 +38,10 @@ export default class SteamID {
 
   public static isSteam64Input(input: SteamID64 = ''): boolean {
     return isValidSteam64Input(input);
+  }
+
+  public static isSteamUrl(url: SteamCommunityUrl = '', includeVanity: boolean): boolean {
+    return isValidSteamCommunityUrl(url, includeVanity);
   }
 
   public static fromValue(input: SteamIDInput = ''): SteamID {
@@ -56,8 +60,8 @@ export default class SteamID {
     return new SteamID().setFromSteam64(input);
   }
 
-  public static fromUrlSync(url: SteamCommunityUrl = ''): SteamID {
-    return new SteamID().setFromUrlSync(url);
+  public static fromUrl(url: SteamCommunityUrl = ''): SteamID {
+    return new SteamID().setFromUrl(url);
   }
 
   public constructor(input?: SteamIDInput) {
@@ -164,14 +168,8 @@ export default class SteamID {
     return this;
   }
 
-  public async setFromUrl(url: SteamCommunityUrl = ''): Promise<this> {
-    const parts = await parseSteamUrl(url);
-    parts ? this.setFromParts(parts) : this.reset();
-    return this;
-  }
-
-  public setFromUrlSync(url: SteamCommunityUrl = ''): this {
-    const parts = parseSteamUrlSync(url);
+  public setFromUrl(url: SteamCommunityUrl = ''): this {
+    const parts = parseSteamUrl(url);
     if (parts) {
       this.setFromParts(parts);
     } else {
