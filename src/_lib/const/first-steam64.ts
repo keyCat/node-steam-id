@@ -1,0 +1,3 @@
+const FIRST_STEAM64 = BigInt('76561197960265729');
+
+export default FIRST_STEAM64;
