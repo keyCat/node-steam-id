@@ -1,9 +1,9 @@
 # source
-lib
-sample
+src
 test
 e2e
 .idea
+node_modules
 
 jest.config.json
 jest.config.ts
@@ -17,6 +17,12 @@ tsconfig.json
 .circleci
 .github
 
+# test
+coverage
+test.js
+test.d.ts
+test.d.ts.map
+
 # misc
 renovate.json
 npm-debug.log
@@ -24,3 +30,4 @@ npm-debug.log
 .commitlintrc.json
 .release-it.json
 CONTRIBUTING.md
+run.js
