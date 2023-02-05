@@ -1,6 +1,6 @@
 {
   "name": "@0x0c/steam-id",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Class and utils to read, create and transform SteamIDs",
   "main": "dist/index.js",
   "repository": "https://github.com/keyCat/node-steam-id",
