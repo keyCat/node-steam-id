@@ -140,13 +140,6 @@ export default class SteamID {
       .setUniverse(universe);
   }
 
-  public setFromValue(input: SteamIDInput = ''): this {
-    const parts = parseSteamID(input);
-    parts ? this.setFromParts(parts) : this.reset();
-
-    return this;
-  }
-
   public setFromSteam2(input: SteamID2 = ''): this {
     const parts = parseSteam2(input);
     parts ? this.setFromParts(parts) : this.reset();
@@ -190,7 +183,7 @@ export default class SteamID {
     return this.toString();
   }
 
-  public toSteamUrl(): string {
+  public toCommunityUrl(): string {
     return partsToSteamUrl({
       accountId: this.getAccountID(),
       instance: this.getInstance(),
