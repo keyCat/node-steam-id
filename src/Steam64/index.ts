@@ -1,7 +1,7 @@
 import { SteamID64, SteamIDAccount, SteamIDInstance, SteamIDType, SteamIDUniverse } from '../types';
 
 export default class Steam64 {
-  private value: bigint = 0n;
+  private value: bigint = BigInt(0);
 
   constructor(value?: SteamID64) {
     if (value) this.value = BigInt(value);
@@ -11,7 +11,7 @@ export default class Steam64 {
     const v = BigInt(value);
     const m = BigInt(mask);
     const o = BigInt(offset);
-    this.value = (this.value & -((m << o) + 1n)) | ((v & m) << o);
+    this.value = (this.value & -((m << o) + BigInt(1))) | ((v & m) << o);
   }
 
   private getBinPart(offset: number, mask: number): number {
