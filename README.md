@@ -1,7 +1,7 @@
 # Steam ID
 
-[![npm version](https://badge.fury.io/js/%400x0c%2Fsteam-id.svg)](https://badge.fury.io/js/%400x0c%2Fsteam-id)
-[![Known Vulnerabilities](https://snyk.io/test/github/keyCat/node-steam-id/badge.svg)](https://snyk.io/test/github/0x0c/steam-id)
+[![npm version](https://badge.fury.io/js/@0x0c%2Fsteam-id.svg)](https://www.npmjs.com/package/@0x0c/steam-id)
+[![Known Vulnerabilities](https://snyk.io/test/github/keyCat/node-steam-id/badge.svg)](https://snyk.io/test/github/keyCat/node-steam-id)
 
 ```bash
 $ npm install @0x0c/steam-id
